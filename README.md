@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # test
 
 > A Vue.js project
@@ -19,3 +20,7 @@ npm run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+=======
+# newVUEItem
+An new item.
+>>>>>>> a03482042215eac2331fd7d097a871d2941c0140
