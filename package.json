@@ -12,10 +12,13 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "debounce": "^1.2.0",
     "eslint-plugin-vuefix": "^0.2.1",
     "iview": "^3.2.2",
+    "iview-editor": "^1.1.1",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
+    "mavon-editor": "^2.6.17",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },

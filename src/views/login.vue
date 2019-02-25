@@ -6,7 +6,6 @@
         <p>记录一切重要事项。</p>
       </div>
       <Tabs>
-
           <TabPane name='login'  label="登录" >
             <i-form ref='loginUser' :model='loginUser' :rules="ruleLogin" >
               <Form-item prop="username">
@@ -41,13 +40,6 @@
           <i-form>
             <Form-item ref='searchData' v-model="searchData">
               <i-button type='success' long @click='search'>点击</i-button>
-            </Form-item>
-          </i-form>
-        </TabPane>
-        <TabPane label='注销'>
-          <i-form>
-            <Form-item>
-              <i-button type='success' long @click='logout'>点击</i-button>
             </Form-item>
           </i-form>
         </TabPane>
@@ -104,9 +96,9 @@ export default {
       this.$refs[name].validate((valid) => {
                 if (valid) {
                   Auth.login(this.loginUser).then(res=>{
-                    //this.$Message.success('Success!');
-                    console.log(11);
-
+                    this.$Message.success('Success!');
+                    this.$refs[name].resetFields()
+                    this.$router.push('/notebooks')
                   }).catch(err=>{
                       console.log(err)
                   })
@@ -132,22 +124,12 @@ export default {
             })
     },
     search () {
-      // Auth.note().then(res=>{
-      //               //this.$Message.success('Success!');
-
-      //             }).catch(err=>{
-      //                 console.log(err)
-      // })
       Auth.getInfo().then(res=>{
                     //this.$Message.success('Success!');
+                    console.log(res);
+
         }).catch(err=>{
           console.log(err)
-      })
-    },
-    logout(){
-      Auth.logout().then(res=>{
-      }).catch(err=>{
-        console.log(err);
       })
     },
     getData () {

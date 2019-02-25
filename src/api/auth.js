@@ -5,7 +5,11 @@ const URL = {
   LOGIN: '/auth/login',
   LOGOUT: '/auth/logout',
   GET_INFO: '/auth',
-  NOTE:'/notebooks'
+  GETNOTE:'/notebooks',
+  NEWNOTE:'/notebooks',
+  DELNOTEBOOK: '/notebooks/:notebookId',
+  NOTES:'/notes/from/:notebookId',
+  DELNOTE: '/notes/:noteId'
 }
 
 export default {
@@ -22,6 +26,18 @@ export default {
     return request(URL.GET_INFO)
   },
   note () {
-    return request(URL.NOTE)
+    return request(URL.GETNOTE)
+  },
+  newnote({title=''} = {title:''}) {
+    return request(URL.NEWNOTE, 'POST', {title})
+  },
+  delnote({ notebookId}) {
+    return request(URL.DELNOTEBOOK.replace(':notebookId', notebookId), 'DELETE')
+  },
+  notes({notebookId}) {
+    return request(URL.NOTES.replace(':notebookId', notebookId), 'GET')
+  },
+  delnotein({noteId}) {
+    return request(URL.DELNOTE.replace(':noteId', noteId), 'DELETE')
   }
 }

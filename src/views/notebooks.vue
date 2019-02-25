@@ -1,24 +1,198 @@
 <!-- -->
 <template>
-  <div></div>
+  <div class='noteBooks'>
+    <Card style='height:100%' dis-hover>
+      <Button type="success" ghost @click="modal2=true">新建笔记本</Button>
+      <Modal :visible.sync="modal2" width="360"  v-model="modal2">
+        <p slot="header" style="color:green;text-align:center">
+            <Icon type="information-circled"></Icon>
+            <span>新建笔记本</span>
+        </p>
+        <div style="text-align:center">
+          <i-input type='text' placeholder='请输入笔记本标题' v-model='noteTitle'></i-input>
+        </div>
+        <div slot="footer">
+            <i-button type="success" size="large" long :loading="modal_loading" @click="addNoteBook();modal2=false" >新建笔记本</i-button>
+        </div>
+      </Modal>
+      <Button type="success"  ghost @click='DCmodal=true'>导出笔记本</Button>
+      <Modal v-model="DCmodal" width="360">
+        <p slot="header" style="color:green;text-align:center">
+            <Icon type="ios-information-circle"></Icon>
+            <span>导出笔记本</span>
+        </p>
+        <div style="text-align:center">
+            <p>确定要导出笔记本吗？</p>
+        </div>
+        <div slot="footer">
+            <Button type="success" size="large" long @click='DCnotebook();DCmodal=false'>导出笔记本</Button>
+        </div>
+      </Modal>
+      <i-input type='text' icon="ios-search" style="width:200px;float:right" placeholder='请输入笔记本标题' class='search' v-model="searchkey"></i-input>
+      <i-table :columns="columns1" :data="noteData.slice((this.currpage-1)*10,this.currpage*10)" style="margin-top:20px" @on-row-click='handleClick'></i-table>
+      <br>
+      <Row type=flex justify='end'>
+        <Page :page-size='10' :current='currpage' :total="noteData.length" show-total @on-change="clickpage"></Page>
+      </Row>
+    </Card>
+  </div>
 </template>
 
 <script>
+import Auth from '../api/auth'
 export default {
   data () {
     return {
+      modal2: false,
+      DCmodal: false,
+      currpage: 1,
+      modal_loading: false,
+      noteTitle: '',
+      searchkey: '',
+      columns1: [
+        {
+          title: '笔记本名称',
+          key: 'title',
+          render: (h, params) => {
+            return h('a', [
+              h('Icon', {
+                props: {
+                  type: 'ios-book',
+                  size: '18px'
+                }
+              }),`${params.row.title}`
+            ])
+          }
+        },
+        {
+          title: '创建日期',
+          key: 'createdAt',
+          render: (h, params) => {
+            return h('a',[
+              h('Time', {
+                props: {
+                  time: params.row.createdAt,
+                  type: 'datetime'
+                }
+              })
+            ])
+          }
+        },
+        {
+          title: '笔记数量',
+          key: 'noteCounts'
+        },
+        {
+          title: '操作',
+          key: 'action',
+          width: '150',
+          render: (h,params) => {
+            return h('div', [
+              h('Button', {
+                props: {
+                  type: 'success',
+                  size: 'small'
+                },
+                on: {
+                  'click': () => {
+                    event.stopPropagation()
+                    console.log(123123);
+                  }
+                }
+              },'编辑'),
+              h('Button', {
+                props: {
+                  type: 'error',
+                  size: 'small'
+                },
+                style: {
+                  margin: '0 10px'
+                },
+                on: {
+                  'click': () => {
+                    event.stopPropagation()
+                    this.onDel(params.row.id)
+                  }
+                }
+              },'删除')
+            ])
+          }
+        }
+      ],
+      noteData: []
     };
   },
+  created() {
+    Auth.getInfo().then(res=>{
+      if(res.isLogin===false){
+        this.$Message.error('请登录!');
+        this.$router.push('/login')
+      } else {
+          Auth.note().then(res=>{
+            this.noteData=res.data.reverse()
+          }).catch(err=>{
+            console.log(err);
+          })
+      }
+    })
+  },
 
-  components: {},
+  methods: {
+    handleClick (row){
+      // if(row.noteCounts===0) {
+      //   this.$Message.error('该笔记本内容为空！');
+      // } else {
+      //   this.$router.push('/note?id='+row.id)
+      // }
+      // console.log(row.id);
 
-  computed: {},
+      if(row.noteCounts===0)
+      return this.$Message.error('当前笔记本为空')
+      else{
+        this.$router.push('/notes?notebookId='+`${row.id}`)
+      }
+    },
+    clickpage (currpage) {
+      this.currpage=currpage
+    },
+    addNoteBook () {
+      Auth.newnote({title:this.noteTitle}).then(res=>{
+        Auth.note().then(res=>{
+          this.noteData=res.data.reverse();
+          this.noteTitle=''
+        }).catch(err=>{
+          console.log(err);
+        })
+      }).catch(err=>{
+        console.log(err);
 
-  mounted: {},
+      })
+    },
+    DCnotebook () {
+      console.log('导出笔记本');
+    },
+    onDel (id) {
+      console.log(id);
+      Auth.delnote({notebookId:id}).then(res=>{
+        console.log(res);
+        Auth.note().then(res=>{
+          this.noteData=res.data.reverse();
 
-  methods: {}
+        }).catch(err=>{
+          console.log(err);
+
+        })
+      }).catch(err=>{
+        console.log(err);
+      })
+
+    }
+  }
 }
 
 </script>
-<style scoped>
+<style lang='less' scoped>
+.search{
+  border-radius: 36px !important
+}
 </style>

@@ -68,6 +68,9 @@ export default function request(url, type = 'GET', data = {}) {
         reject(res.data)
       }
     }).catch(err => {
+      debugger;
+      console.log(err);
+
       reject({ msg: '网络异常' })
     })
   })

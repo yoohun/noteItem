@@ -5,8 +5,9 @@ import login from '@/views/login'
 import notebooks from '@/views/notebooks'
 import notes from '@/views/notes'
 import trash from '@/views/trash'
-import lay from '@/components/lay'
 import note from '@/components/note'
+import secondlogin from '@/views/secondlogin'
+import notedetail from '@/views/notedetail'
 
 
 Vue.use(Router)
@@ -15,20 +16,28 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: lay,
+      component: layout,
       redirect: '/notebooks',
       children: [
         {
           path: 'notebooks',
+          name:'notebooks',
           component: notebooks
         },
         {
           path: 'notes',
+          name:'notes',
           component: notes
         },
         {
           path: 'trash',
+          name:'trash',
           component: trash
+        },
+        {
+          path: 'notedetail',
+          name: 'notedetail',
+          component: notedetail
         }
       ]
     },
@@ -38,14 +47,14 @@ export default new Router({
       component: login
     },
     {
-      path: '/layout',
-      name: 'layout',
-      component: layout
-    },
-    {
       path: '/note',
       name: 'note',
       component: note
+    },
+    {
+      path: '/secondlogin',
+      name: 'secondlogin',
+      component: secondlogin
     }
   ]
 })
