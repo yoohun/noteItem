@@ -58,6 +58,7 @@ export default {
       Auth.notes({notebookId: this.curNotebookId}).then(res=>{
         this.notelist=res.data
         this.curNoteId = res.data[0].id
+        this.$emit('chosenotename',res.data[0],this.notelist)
         // this.text=res.data
         this.$router.replace({
           path: '/notes',
@@ -81,6 +82,7 @@ export default {
       Auth.notes({notebookId: name}).then(res=>{
         this.notelist = res.data || []
         this.curNoteId = res.data[0]?res.data[0].id:'null'
+        this.$emit('chosenotename',res.data[0],res.data)
       })
       this.$router.replace({
           path:'/notes',

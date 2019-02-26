@@ -85,8 +85,9 @@ export default {
     },
     saveNote: debounce(function(value){
       Note.updatenote({noteId:this.$route.query.noteId,title:this.curNote.title,content:this.curNote.content}).then(res=>{
-        console.log(res)
-        this.$emit('changeTitle',this.curNote.title)
+        let noteCon = this.notebooklist.find(item=>item.id===this.$route.query.noteId)
+        console.log(noteCon);
+
         this.statusText = '已保存'
       }).catch(err=>{
         console.log(err);

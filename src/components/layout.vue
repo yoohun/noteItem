@@ -113,7 +113,7 @@ import Auth from '../api/auth'
         position: fixed;
         top: 0;
         left: 0;
-        z-index: 2;
+        z-index: 5;
     }
     .logo{
         height: 50px;

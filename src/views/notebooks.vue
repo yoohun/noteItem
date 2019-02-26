@@ -34,21 +34,37 @@
       <Row type=flex justify='end'>
         <Page :page-size='10' :current='currpage' :total="noteData.length" show-total @on-change="clickpage"></Page>
       </Row>
+      <Modal v-model="editbtn" width="360">
+          <p slot="header" style="color:green;text-align:center">
+              <Icon type="ios-information-circle"></Icon>
+              <span>编辑笔记本标题</span>
+          </p>
+          <div style="text-align:center">
+              <i-input type='text' placeholder='编辑笔记本标题' v-model="noteNewtitle"></i-input>
+          </div>
+          <div slot="footer">
+              <Button type="success" size="large" long :loading="modal_loading" @click='subminEdit'>编辑标题</Button>
+          </div>
+      </Modal>
     </Card>
   </div>
 </template>
 
 <script>
 import Auth from '../api/auth'
+import notebook from '../api/Notebooks'
 export default {
   data () {
     return {
+      choseid: null,
+      noteNewtitle: '',
       modal2: false,
       DCmodal: false,
       currpage: 1,
       modal_loading: false,
       noteTitle: '',
       searchkey: '',
+      editbtn: false,
       columns1: [
         {
           title: '笔记本名称',
@@ -96,10 +112,13 @@ export default {
                 on: {
                   'click': () => {
                     event.stopPropagation()
-                    console.log(123123);
+                    this.editbtn = true;
+                    this.choseid = params.row.id
                   }
                 }
               },'编辑'),
+
+
               h('Button', {
                 props: {
                   type: 'error',
@@ -118,6 +137,8 @@ export default {
             ])
           }
         }
+
+
       ],
       noteData: []
     };
@@ -186,6 +207,23 @@ export default {
         console.log(err);
       })
 
+    },
+    subminEdit () {
+      let newtitle=this.noteNewtitle
+      let notebookid=this.choseid
+      notebook.editNotebook({notebookId:notebookid,title:newtitle}).then(res=>{
+        this.$Message.success('笔记修改成功')
+        setTimeout(() => {
+          Auth.note().then(res=>{
+          this.noteData=res.data.reverse()
+        })
+        }, 200);
+      }).catch(err=>{
+        console.log(err);
+      })
+      this.choseid=null
+      this.noteNewtitle = ''
+      this.editbtn = false
     }
   }
 }
