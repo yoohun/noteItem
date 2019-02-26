@@ -99,6 +99,8 @@ export default {
       // console.log(this.curNotebookId);
       Auth.notes({notebookId:this.$route.query.notebookId}).then(res=>{
         let note = res.data.find(item=>item.id===name)
+        console.log(note);
+        console.log(this.notelist);
         this.$emit('chosenotename',note,this.notelist)
         this.$router.replace({
           path:'/notes',

@@ -54,6 +54,7 @@ export default {
             noteId: this.curNoteId
           }
         })
+
       }).catch(err=>{
         console.log(err);
       })
@@ -66,6 +67,8 @@ export default {
     noteContent () {
       this.curNote = arguments[0],
       this.notelist = arguments[1]
+        console.log(this.curNote);
+        console.log(this.notelist);
     },
     onDelete () {
       Note.delnote({noteId:this.$route.query.noteId}).then(res=>{
@@ -85,9 +88,8 @@ export default {
     },
     saveNote: debounce(function(value){
       Note.updatenote({noteId:this.$route.query.noteId,title:this.curNote.title,content:this.curNote.content}).then(res=>{
-        let noteCon = this.notebooklist.find(item=>item.id===this.$route.query.noteId)
-        console.log(noteCon);
-
+        let noteCon = this.notelist.find(item=>item.id===this.$route.query.noteId)
+        // console.log(this.notebooklist.find(item=>item.id===this.$route.query.noteId));
         this.statusText = '已保存'
       }).catch(err=>{
         console.log(err);
@@ -102,7 +104,7 @@ export default {
        let curNotebookId = res.data[0].id
       //  this.notebooklist= res.data
        Auth.notes({notebookId: curNotebookId}).then(res=>{
-        // this.notelist=this.notelist.length=='0' ? [] :res.data
+        this.notelist=this.notelist.length=='0' ? [] :res.data
         let curNoteId = res.data[0]?res.data[0].id:"null";
         this.curNote = res.data[0];
         this.$router.replace({

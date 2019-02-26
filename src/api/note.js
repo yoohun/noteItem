@@ -18,7 +18,6 @@ export default {
     return request(URL.DELNOTE.replace(':noteId', noteId), 'DELETE')
   },
   updatenote({ noteId, title, content }) {
-    console.log('up');
     return request(URL.UPDATENOTE.replace(':noteId', noteId), 'PATCH', {title, content})
   }
 }
