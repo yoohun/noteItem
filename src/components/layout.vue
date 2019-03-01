@@ -84,13 +84,13 @@ import Auth from '../api/auth'
             return {
                 count: 2,
                 openTheme: false,
-                isCollapsed: false
+                isCollapsed: false,
+                notebookid: 0
             };
         },
         methods: {
             logOut () {
                 Auth.logout().then(res=>{
-
                     this.$Message.success('注销成功');
                     this.$router.push('/login')
                 }).catch(err=>{

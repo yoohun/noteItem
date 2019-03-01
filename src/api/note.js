@@ -9,7 +9,7 @@ const URL = {
 
 export default {
   getnotes({ notebookId}){
-    return request(URL.GETNOTE.replace(':notebookId', notebookId))
+    return request(URL.GETNOTES.replace(':notebookId', notebookId))
   },
   addnote({ notebookId },{title='',content=''}={title:'',content:''}){
     return request(URL.ADD.replace(':notebookId',notebookId),'POST',{title,content})

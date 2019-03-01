@@ -33,3 +33,4 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 
 ###tips:  
 1. 封装axios的接口的时候发送请求数据的类型切记不要用空格，否则返回网络失败： 'POST'(OK) 'POST '(NO)
+2. 在引入vuex里面的页面的时候切记：【import { mapGetters, mapState, mapActions } from 'vuex';】注意！！！！！vuex全小写不要任何一个大写！

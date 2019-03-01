@@ -166,6 +166,7 @@ export default {
       //   this.$router.push('/note?id='+row.id)
       // }
       // console.log(row.id);
+
       if(row.noteCounts===0)
       return this.$Message.error('当前笔记本为空')
       else{
@@ -185,6 +186,7 @@ export default {
         })
       }).catch(err=>{
         console.log(err);
+
       })
     },
     DCnotebook () {
@@ -196,12 +198,15 @@ export default {
         console.log(res);
         Auth.note().then(res=>{
           this.noteData=res.data.reverse();
+
         }).catch(err=>{
           console.log(err);
+
         })
       }).catch(err=>{
         console.log(err);
       })
+
     },
     subminEdit () {
       let newtitle=this.noteNewtitle

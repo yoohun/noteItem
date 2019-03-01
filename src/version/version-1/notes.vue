@@ -24,20 +24,16 @@ import siderbar from './siderbar'
 import Auth from '../api/auth'
 import Note from '../api/note'
 import debounce from 'debounce'
-import { mapGetters, mapState, mapActions, mapMutations } from 'vuex';
 export default {
   data () {
     return {
-      // curNote: curNote,
       curNotebookId: null,
       curNoteId: null,
       notelist:[],
       notebooklist: [],
+      curNote: {},
       statusText: "已保存",
     };
-  },
-  computed: {
-    ...mapGetters(['curNote','notes'])
   },
 
   components: {
@@ -47,38 +43,53 @@ export default {
   created () {
     Auth.note().then(res=>{
       this.notebooklist = res.data
-      let curNotebookId= this.$route.query.notebookId || res.data[0].id
-      this.getnotes({notebookId:curNotebookId})
+      this.curNotebookId = this.$route.query.notebookId || res.data[0].id
+      Auth.notes({notebookId: this.curNotebookId}).then(res=>{
+        this.notelist=res.data
+        this.curNoteId = res.data[0]?res.data[0].id:"null"
         this.$router.replace({
           path: '/notes',
           query: {
-            notebookId: curNotebookId,
-            noteId: this.notes[0].id
+            notebookId: this.curNotebookId,
+            noteId: this.curNoteId
           }
         })
+
+      }).catch(err=>{
+        console.log(err);
+      })
     }).catch(err=>{
       console.log(err);
     })
   },
 
   methods: {
-    ...mapActions(['updateNote','deleteNote','getnotes']),
-    ...mapMutations(['setCurNote']),
     noteContent () {
-      this.setCurNote({curNoteId:arguments[0].id})
+      this.curNote = arguments[0],
+      this.notelist = arguments[1]
+        console.log(this.curNote);
+        console.log(this.notelist);
     },
     onDelete () {
-      this.deleteNote({noteId:this.curNote.id})
-      this.$router.replace({
-        path: '/notes',
-        query: {
-          notebookId: this.$route.query.notebookId,
-          noteId: this.notes[this.notes.length-2].id
-        }
+      Note.delnote({noteId:this.$route.query.noteId}).then(res=>{
+        this.$Message.success(res.msg)
+        this.notelist.splice(this.notelist.indexOf(this.curNote),1)
+        this.curNote = {}
+        this.$router.replace({
+          path: '/notes',
+          query: {
+            notebookId: this.$route.query.noteId,
+            noteId: this.notelist[0].id
+          }
+        })
+      }).catch(err=>{
+        console.log(err);
       })
     },
     saveNote: debounce(function(value){
-      this.updateNote({noteId:this.curNote.id,title:this.curNote.title,content:this.curNote.content}).then(res=>{
+      Note.updatenote({noteId:this.$route.query.noteId,title:this.curNote.title,content:this.curNote.content}).then(res=>{
+        let noteCon = this.notelist.find(item=>item.id===this.$route.query.noteId)
+        // console.log(this.notebooklist.find(item=>item.id===this.$route.query.noteId));
         this.statusText = '已保存'
       }).catch(err=>{
         console.log(err);
@@ -91,16 +102,22 @@ export default {
    if(!to.query.notebookId) {
      Auth.note().then(res=>{
        let curNotebookId = res.data[0].id
-      this.getnotes({curNotebookId})
-      this.$router.replace({
+      //  this.notebooklist= res.data
+       Auth.notes({notebookId: curNotebookId}).then(res=>{
+        this.notelist=this.notelist.length=='0' ? [] :res.data
+        let curNoteId = res.data[0]?res.data[0].id:"null";
+        this.curNote = res.data[0];
+        this.$router.replace({
           path: '/notes',
           query: {
             notebookId: curNotebookId,
-            noteId:this.curNote.id
+            noteId: curNoteId
           }
         })
+       })
      })
    }
+   this.curNote = {}
     next()
   }
 }

@@ -6,6 +6,7 @@ import router from './router'
 import './style/reset.css'
 import iView from 'iview' // 导入组件库
 import mavonEditor from 'mavon-editor'
+import store from './store'  // 这个是新加的
 import 'mavon-editor/dist/css/index.css'
 import 'iview/dist/styles/iview.css' // 导入样式
 
@@ -20,6 +21,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
