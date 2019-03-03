@@ -60,7 +60,6 @@ export default {
       console.log(err);
     })
   },
-
   methods: {
     ...mapActions(['updateNote','deleteNote','getnotes']),
     ...mapMutations(['setCurNote']),
@@ -91,7 +90,7 @@ export default {
    if(!to.query.notebookId) {
      Auth.note().then(res=>{
        let curNotebookId = res.data[0].id
-      this.getnotes({curNotebookId})
+      this.getnotes({notebookId:curNotebookId})
       this.$router.replace({
           path: '/notes',
           query: {
