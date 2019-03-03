@@ -165,4 +165,8 @@ export default {
   font-size: 14px;
   line-height: 20px;
 }
+.ivu-tabs{
+  position: relative;
+  top: 80px
+}
 </style>
