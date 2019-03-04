@@ -96,9 +96,14 @@ export default {
       this.$refs[name].validate((valid) => {
                 if (valid) {
                   Auth.login(this.loginUser).then(res=>{
-                    this.$Message.success('Success!');
+                    this.$store.dispatch('getUserInfo').then(response=>{
                     this.$refs[name].resetFields()
                     this.$router.push('/notebooks')
+                    this.$Message.success({
+                        content: `${res.data.username},欢迎您使用印象笔记`,
+                        duration: 6
+                  })
+                })
                   }).catch(err=>{
                       console.log(err)
                   })
@@ -107,6 +112,29 @@ export default {
                 }
             })
 
+    },
+    onLogin(name) {
+      this.$refs[name].validate((valid) => {
+            if (valid) {
+              Auth.login(this.loginForm).then(
+                res=>{
+                // 获取用户信息
+                this.$store.dispatch('getUserInfo').then(response=>{
+                  this.$refs[name].resetFields()
+                   this.$router.push('/notebooks')
+                   this.$Message.success({
+                      content: `${res.data.username},欢迎您使用印象笔记`,
+                      duration: 6
+                  })
+                })
+                }
+              ).catch(err=>{
+                  this.$Message.error(err.msg)
+              })
+            } else {
+                return
+            }
+          })
     },
     registTest (name) {
       this.$refs[name].validate((valid) => {

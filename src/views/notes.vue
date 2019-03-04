@@ -14,7 +14,9 @@
       <div class="title">
         <input type="text" v-model="curNote.title" @input="saveNote(),statusText='正在修改...'">
       </div>
-      <mavon-editor v-model="curNote.content" :toolbarsFlag = 'false'  @input="saveNote(),statusText='正在修改...'" />
+      <div style='height:84%;'>
+        <mavon-editor style="height:100%" v-model="curNote.content" :toolbarsFlag = 'false'  @input="saveNote(),statusText='正在修改...'" />
+      </div>
     </div>
   </div>
 </template>

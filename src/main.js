@@ -17,6 +17,14 @@ Vue.use(mavonEditor)
 
 Vue.config.productionTip = false
 
+router.beforeEach((to, from, next) => {
+  if (!store.getters.isLogin && to.path !== '/login') {
+    router.push('/login')
+  } else {
+    next()
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -145,16 +145,11 @@ export default {
   },
   created() {
     Auth.getInfo().then(res=>{
-      if(res.isLogin===false){
-        this.$Message.error('请登录!');
-        this.$router.push('/login')
-      } else {
-          Auth.note().then(res=>{
+      Auth.note().then(res=>{
             this.noteData=res.data.reverse()
           }).catch(err=>{
             console.log(err);
           })
-      }
     })
   },
 
