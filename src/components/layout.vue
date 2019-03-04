@@ -117,7 +117,6 @@ import Auth from '../api/auth'
     }
     .logo{
         height: 50px;
-        margin-top: 5px;
     }
     .notification{
         text-align: center;
