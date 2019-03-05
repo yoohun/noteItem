@@ -36,20 +36,6 @@
               </Form-item>
             </i-form>
           </TabPane>
-        <TabPane label='验证'>
-          <i-form>
-            <Form-item ref='searchData' v-model="searchData">
-              <i-button type='success' long @click='search'>点击</i-button>
-            </Form-item>
-          </i-form>
-        </TabPane>
-        <TabPane label='获取数据'>
-          <i-form>
-            <Form-item>
-              <i-button type='success' long @click='getData'>点击</i-button>
-            </Form-item>
-          </i-form>
-        </TabPane>
         </Tabs>
     </div>
   </div>
@@ -195,6 +181,6 @@ export default {
 }
 .ivu-tabs{
   position: relative;
-  top: 80px
+  top: 40px
 }
 </style>

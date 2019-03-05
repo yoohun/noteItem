@@ -101,7 +101,7 @@ import Auth from '../api/auth'
     };
 </script>
 
-<style>
+<style scoped>
     .layout {
       min-height: 100vh
     }

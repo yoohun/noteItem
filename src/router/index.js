@@ -5,7 +5,6 @@ import login from '@/views/login'
 import notebooks from '@/views/notebooks'
 import notes from '@/views/notes'
 import trash from '@/views/trash'
-import note from '@/components/note'
 
 
 Vue.use(Router)
@@ -38,11 +37,6 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: login
-    },
-    {
-      path: '/note',
-      name: 'note',
-      component: note
     }
   ]
 })
