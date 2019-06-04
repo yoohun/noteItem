@@ -25,10 +25,7 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 印象笔记.
 >>>>>>> a03482042215eac2331fd7d097a871d2941c0140
 
-####bug：
-1.标题输入之后无法实时的在左侧的笔记列表栏里同步
-2.并且输入新的标题和内容并没有办法自动更新，且刷新之后内容无法更新！
-3.在notebooks列表页点击笔记本进入notes页面的时候sider组件的高亮无法改变！
+
 
 
 ###tips:  
